@@ -57,11 +57,11 @@ function WelcomeScreen({ navigation }) {
             }}
           >
             <Text style={styles.title2}>Sports</Text>
-            <Pressable onPress={() => navigation.navigate("AllSports")}>
+            <Pressable onPress={() => navigation.navigate("AllSports",{flag:1})}>
               <Text style={styles.title3}>View All</Text>
             </Pressable>
           </View>
-          <HorizontalFlatList state="true" />
+          <HorizontalFlatList navigation={navigation} state="true" />
 
           <View
             style={{
@@ -70,12 +70,12 @@ function WelcomeScreen({ navigation }) {
               marginVertical: 4,
             }}
           >
-            <ViewPager />
+            <ViewPager navigation={navigation} />
           </View>
 
           <Text style={styles.title4}>Sports Calendar</Text>
 
-          <HorizontalFlatList state="false" />
+          <HorizontalFlatList navigation={navigation} state="false" />
           <View
             style={{
               flexDirection: "row",
@@ -85,11 +85,10 @@ function WelcomeScreen({ navigation }) {
               marginVertical: 4,
             }}
           >
-            <HomeMain />
+            <HomeMain navigation={navigation} state='true' />
           </View>
           <Text style={styles.title2}>Health Facilities</Text>
           <HealthFacilities />
-          <LocationPicker/>
         </ScrollView>
       </View>
     </SafeAreaView>

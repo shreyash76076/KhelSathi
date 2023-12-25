@@ -1,45 +1,39 @@
+import { View, Text, BackHandler } from "react-native";
 import React, { useEffect } from "react";
-import { BackHandler, StyleSheet, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import BackArrowHeader from "../components/BackArrowHeader";
-import AllSportsData from "../components/AllSportsData";
-import HorizontalFlatList from "../components/HomeComponent/HorizontalFlatList";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
+import HomeMain from "../components/HomeComponent/HomeMain";
 
-export default function AllSports({route, navigation }) {
+
+export default function SportsDetails({ route, navigation }) {
+  const data = route.params.data;
   const flag = route.params.flag;
-  console.log(flag)
-
-  function backButton() {
-    navigation.goBack();
-  }
-
-  useEffect(() => {
-    // handleBackPress()
-  }, [flag])
-  
+  console.log(data);
 
   const handleBackPress = () => {
-    if (flag === 1 ) {
+    if (flag === 1) {
       // If flag is 1, navigate to WelcomeScreen
-      console.log("WELCOME987");
-      navigation.navigate('WelcomeScreen');
+      console.log("Sports AllSPorts");
+      navigation.navigate("AllSports", { flag: 1 });
       // Return true to prevent the default behavior (e.g., exit the app)
       return true;
     } else {
       // If flag is not 1, go back to the previous screen
-      console.log("GO BACK");
-      navigation.goBack();
+      console.log("Sports BACK");
+      navigation.navigate("WelcomeScreen", { flag: 1 });
+      // navigation.goBack();
       // Return true to prevent the default behavior (e.g., exit the app)
       return true;
     }
     // If neither condition is met, return false to allow the default behavior
     return false;
   };
-  
+
   useEffect(() => {
     // Add the event listener for the hardware back button
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
+      "hardwareBackPress",
       handleBackPress
     );
 
@@ -49,11 +43,15 @@ export default function AllSports({route, navigation }) {
     };
   }, [flag, navigation]);
 
+  function backButton() {
+    navigation.goBack();
+  }
+
   return (
     <SafeAreaView style={styles.rootContainer}>
-      <BackArrowHeader title="All Sports" backButton={backButton} />
+      <BackArrowHeader title={data.name} backButton={backButton} />
       <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-        <AllSportsData navigation={navigation} flag={flag}/>
+      <HomeMain state={false} data={data.name} image={data.image} />
       </View>
     </SafeAreaView>
   );

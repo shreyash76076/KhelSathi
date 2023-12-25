@@ -1,5 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Pressable,
@@ -15,8 +15,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { createUser } from "../Util/auth";
 import LoadingOverlay from "../components/LoadingOverlay";
+import DropDown from "../components/CustomeDropDown";
+import BottomSheet from "../components/CustomBottomSheet";
 
-export default function SignUp({ navigation }) {
+export default function SignUp({ route, navigation }) {
   const [name, setName] = useState("");
   const [Email, setEmail] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -25,6 +27,66 @@ export default function SignUp({ navigation }) {
   const [Password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [selectValue, setSelectValue] = React.useState("");
+  const [option, setOption] = React.useState(false);
+
+  const data = [
+    {
+      id: 1,
+      image: require("../assets/RegisterCategory/player.png"),
+      name: "Player",
+    },
+    {
+      id: 2,
+      image: require("../assets/RegisterCategory/coach.png"),
+      name: "Coach",
+    },
+    {
+      id: 3,
+      image: require("../assets/RegisterCategory/Primary.png"),
+      name: "Primary Care Doctor",
+    },
+    {
+      id: 4,
+      image: require("../assets/RegisterCategory/orthopedic.png"),
+      name: "Orthopedic",
+    },
+    {
+      id: 5,
+      image: require("../assets/RegisterCategory/Chiropractors.png"),
+      name: "Chiropractors",
+    },
+    {
+      id: 6,
+      image: require("../assets/RegisterCategory/athelete.png"),
+      name: "Athlete Trainer",
+    },
+    {
+      id: 7,
+      image: require("../assets/RegisterCategory/dietition.png"),
+      name: "Dietitian",
+    },
+    {
+      id: 8,
+      image: require("../assets/RegisterCategory/therapist.png"),
+      name: "Physical Therapist",
+    },
+    {
+      id: 9,
+      image: require("../assets/RegisterCategory/others.png"),
+      name: "Others",
+    },
+  ];
+
+  const selected = (item) => {
+    setSelectValue(item);
+  };
+
+  useEffect(() => {
+    console.log(selectValue.name);
+  }, [selectValue]);
+
+  const registerTitle = route.params.name;
 
   async function signupHandler() {
     setIsAuthenticating(true);
@@ -88,7 +150,21 @@ export default function SignUp({ navigation }) {
     }
   }
 
+  // in screen where you want to use it
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedSport, setSelectedSport] = useState("");
+
  
+
+  const toggleModal = () => {
+    setOption(!option);
+    setModalVisible(!isModalVisible);
+  };
+
+  const handleSportSelection = (sport) => {
+    setSelectedSport(sport);
+    toggleModal();
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#a21c44" }}>
@@ -98,12 +174,11 @@ export default function SignUp({ navigation }) {
         colors={["#BC1342", "#571262"]}
       >
         <ForgotToolbar
-          title="Registration for Player"
+          title={`Registration for ${registerTitle}`}
           backButton={backButton}
         />
-
         <TextInput
-          placeholder="Name of Player"
+          placeholder={`Name of ${registerTitle}`}
           placeholderTextColor="grey"
           style={{
             borderWidth: 1,
@@ -136,6 +211,58 @@ export default function SignUp({ navigation }) {
           value={Email}
           onChangeText={(text) => setEmail(text)}
         />
+        <TextInput
+          placeholder="Contact No."
+          placeholderTextColor="grey"
+          style={{
+            borderWidth: 1,
+            borderColor: "#6FB5F5",
+            color: "black",
+            backgroundColor: "white",
+            elevation: 5,
+            borderRadius: 6,
+            marginHorizontal: "3%",
+            padding: "2%",
+            marginTop: "4%",
+          }}
+          value={Email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <Pressable onPress={toggleModal}>
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "#6FB5F5",
+              backgroundColor: "white",
+              elevation: 5,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderRadius: 6,
+              marginHorizontal: "3%",
+              padding: "3%",
+              marginTop: "4%",
+            }}
+          >
+            <Text
+              style={{
+                color: "grey",
+              }}
+              value={Password}
+              secureTextEntry={!isPasswordVisible}
+              onChangeText={(text) => setPassword(text)}
+            >
+              {!!selectedSport ? selectedSport : "Select Sport"}
+            </Text>
+            <Image
+              source={require("../assets/drawables/dropDown.png")}
+              style={{
+                transform: [{ rotate: option ? "180deg" : "0deg" }],
+              }}
+            ></Image>
+          </View>
+        </Pressable>
+
         <View
           style={{
             borderWidth: 1,
@@ -210,8 +337,17 @@ export default function SignUp({ navigation }) {
             />
           </Pressable>
         </View>
-
-        <Button name="REGISTER" validatonCheck={validateInput} />
+        <Button
+          name="REGISTER"
+          validatonCheck={validateInput}
+          onPress={toggleModal}
+        />
+        {isModalVisible && (
+          <BottomSheet
+            sports={["Football", "Basketball", "Tennis"]}
+            handleSportSelection={handleSportSelection}
+          />
+        )}
       </LinearGradient>
     </SafeAreaView>
   );

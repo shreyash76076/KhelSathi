@@ -8,32 +8,38 @@ import {
   StyleSheet,
   ActivityIndicator,
   RefreshControl,
+  Pressable,
 } from "react-native";
 import { getSports } from "../Util/auth";
 
 let ITEMS_PER_PAGE = 20;
 
-const CurvedGridItem = ({ item }) => {
+const CurvedGridItem = ({navigation, item,flag }) => {
   if (item.id !== "placeholder") {
     return (
-      <View style={styles.itemContainer}>
-        <LinearGradient colors={["white", "white"]} style={styles.gradient}>
-          <Image
-            source={{
-              uri: "http://mobile.khelsathi.in/files/sports/" + item.image,
-            }}
-            style={styles.image}
-          />
-          <Text style={styles.text}>{item.name}</Text>
-        </LinearGradient>
-      </View>
+      <Pressable
+        style={styles.itemContainer}
+        onPress={() => navigation.navigate("SportsDetails", { data: item,flag:1 })}
+      >
+        <View>
+          <LinearGradient colors={["white", "white"]} style={styles.gradient}>
+            <Image
+              source={{
+                uri: "http://mobile.khelsathi.in/files/sports/" + item.image,
+              }}
+              style={styles.image}
+            />
+            <Text style={styles.text}>{item.name}</Text>
+          </LinearGradient>
+        </View>
+      </Pressable>
     );
   } else {
     return <View style={styles.itemContainer}></View>;
   }
 };
 
-const CurvedGridView = () => {
+const CurvedGridView = ( {navigation,flag}) => {
   const [sportsData, setSportsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -124,7 +130,7 @@ const CurvedGridView = () => {
     <FlatList
       data={duplicateLastItemIfNeeded()}
       numColumns={2}
-      renderItem={({ item }) => <CurvedGridItem item={item} />}
+      renderItem={({ item }) => <CurvedGridItem navigation={navigation} item={item} flag={flag} />}
       keyExtractor={(item, index) => `${item.id}-${index}`}
       onEndReached={handleEndReached}
       onEndReachedThreshold={0.1}
@@ -134,7 +140,8 @@ const CurvedGridView = () => {
       ListFooterComponent={() =>
         // Render a loader component when loading more data
 
-        !refreshing && loading && <ActivityIndicator size="large" color="#0000ff" />
+        !refreshing &&
+        loading && <ActivityIndicator size="large" color="#0000ff" />
       }
     />
   );

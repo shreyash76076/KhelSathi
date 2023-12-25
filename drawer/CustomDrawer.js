@@ -65,11 +65,11 @@ export const CustomDrawer = (props) => {
         </LinearGradient>
       </View>
       <ScrollView style={{flex:0.83,backgroundColor:Colors.white,padding:10}}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('EditScreen')} style={{flexDirection:'row',borderBottomWidth:1,marginTop:5,alignItems:'center'}}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('WelcomeScreen')} style={{flexDirection:'row',borderBottomWidth:1,marginTop:5,alignItems:'center'}}>
           <Image style={{marginEnd:7,marginBottom:9}} source={require('../assets/drawables/home.png')}/>
           <Text style={{}}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => props.navigation.navigate('EditScreen')} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Facilities')} style={{flexDirection:'row',borderBottomWidth:1,marginTop:12,alignItems:'center'}}>
           <Image style={{marginEnd:7,marginBottom:9}} source={require('../assets/drawables/facilities.png')}/>
           <Text style={{}}>Facilities</Text>
         </TouchableOpacity>

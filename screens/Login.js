@@ -47,7 +47,7 @@ export default function Login({ navigation }) {
   }
 
   function signUpHandler() {
-    navigation.navigate("SignUp");
+    navigation.navigate("RegisterCategory");
   }
 
   function validatonCheck() {

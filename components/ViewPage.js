@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  ActivityIndicator,
+  Pressable,
+} from "react-native";
 import Swiper from "react-native-swiper";
 import { getBanners } from "../Util/auth";
 
-const ViewPager = () => {
+const ViewPager = ({ navigation }) => {
   const [bannerData, setBannerData] = useState({ banners: [] });
   const [loading, setLoading] = useState(true);
 
@@ -22,10 +28,14 @@ const ViewPager = () => {
     fetchData();
   }, []);
 
-
-
   if (loading) {
-    return <ActivityIndicator size="large" color="black" style={{ flex: 1, justifyContent: "center", alignItems: "center" }} />;
+    return (
+      <ActivityIndicator
+        size="large"
+        color="black"
+        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+      />
+    );
   }
 
   return (
@@ -38,10 +48,12 @@ const ViewPager = () => {
       dotStyle={{ backgroundColor: "black", width: 8, height: 8 }} // Customize dot style
       activeDotStyle={{ backgroundColor: "orange", width: 10, height: 10 }} // Customize active dot style
     >
-      {bannerData.banners.map((banner, index) => (
-        <View key={index} style={styles.slide}>
-          <Image style={styles.image} source={{ uri: banner.image }} />
-        </View>
+      {bannerData.banners.map((banner, id) => (
+        <Pressable key={id} onPress={()=>navigation.navigate('GalleryScreen')}>
+          <View  style={styles.slide}>
+            <Image style={styles.image} source={{ uri: banner.image }} />
+          </View>
+        </Pressable>
       ))}
     </Swiper>
   );
@@ -52,7 +64,7 @@ const styles = StyleSheet.create({
     height: 220,
   },
   slide: {
-    width: '100%',
+    width: "100%",
     height: 200,
     justifyContent: "center",
     alignItems: "center",
@@ -61,7 +73,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 6,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
 });
 

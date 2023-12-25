@@ -138,9 +138,18 @@
 
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+import { CommonActions } from "@react-navigation/native";
 
-const data = [
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  Pressable,
+} from "react-native";
+
+const dataMain = [
   {
     id: "1",
     imageName: require("../../assets/homeScreen/schemeIcon.png"),
@@ -228,10 +237,56 @@ const data = [
   // Add more items as needed
 ];
 
-const CurvedGridItem = ({ item }) => {
+const data2 = [
+  {
+    id: "1",
+    imageName: require("../../assets/SportsDetails/Camps.png"),
+    text: "Camps",
+    color1: "#FFFFFF",
+    colo2: "#FFFFFF",
+  },
+  {
+    id: "2",
+    imageName: require("../../assets/SportsDetails/sportsPlaceholder.png"),
+    text: "Matches",
+    color1: "#FFFFFF",
+    colo2: "#FFFFFF",
+  },
+  {
+    id: "3",
+    imageName: require("../../assets/SportsDetails/trails.png"),
+    text: "Trials",
+    color1: "#FFFFFF",
+    colo2: "#FFFFFF",
+  },
+
+  {
+    id: "4",
+    imageName: require("../../assets/SportsDetails/facilitys.png"),
+    text: "Facilities",
+    color1: "#FFFFFF",
+    colo2: "#FFFFFF",
+  },
+  {
+    id: "5",
+    imageName: require("../../assets/SportsDetails/coaches.png"),
+    text: "Coachs",
+    color1: "#FFFFFF",
+    colo2: "#FFFFFF",
+  },
+  {
+    id: "6",
+    imageName: "",
+    text: "",
+    color1: "#FFFFFF",
+    colo2: "#FFFFFF",
+  },
+];
+
+const CurvedGridItem = ({ navigation, item }) => {
   const getGradientDirection = (item) => {
     // Logic to determine the gradient direction based on the item
-    if (item.text === "Financial Aid" || item.text === 'Notices') {
+    if (item.text === "Financial Aid" || item.text === "Notices") {
       return { start: { x: 0.0, y: 0.5 }, end: { x: 1.0, y: 0.5 } };
     } else {
       // Default to top to bottom
@@ -239,10 +294,47 @@ const CurvedGridItem = ({ item }) => {
     }
   };
 
+  function homeItemHandler() {
+    if (item.text === "Facilities") {
+      // Reset the Facilities stack and navigate to the initial screen
+      navigation.dispatch({
+        ...CommonActions.reset({
+          index: 0,
+          routes: [{ name: "FacilitiesScreen" }],
+        }),
+      });
+    }
+    if (item.text === "Notices") {
+      // Reset the Facilities stack and navigate to the initial screen
+      navigation.dispatch({
+        ...CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Notices" }],
+        }),
+      });
+    }
+
+    if (item.text === "Gallery") {
+      // Reset the Facilities stack and navigate to the initial screen
+      navigation.dispatch({
+        ...CommonActions.reset({
+          index: 0,
+          routes: [{ name: "GalleryScreen" }],
+        }),
+      });
+    }
+    if (item.text === "Scheme & Guidelines") {
+      navigation.navigate("SchemeAndGuidelines");
+    }
+    if (item.text === "Player List") {
+      navigation.navigate("PlayerList");
+    }
+  }
+
   const gradientDirection = getGradientDirection(item);
 
   return (
-    <View style={styles.itemContainer}>
+    <Pressable onPress={homeItemHandler} style={styles.itemContainer}>
       <LinearGradient
         colors={[item.color1, item.colo2]} // Change colors as per your preference
         style={styles.gradient}
@@ -251,16 +343,67 @@ const CurvedGridItem = ({ item }) => {
         <Image source={item.imageName} style={styles.image} />
         <Text style={styles.text}>{item.text}</Text>
       </LinearGradient>
-    </View>
+    </Pressable>
   );
 };
 
-const CurvedGridView = () => {
-  return (
+const SportsDetails = ({ item, data, image }) => {
+  const getGradientDirection = (item) => {
+    // Logic to determine the gradient direction based on the item
+    if (item.text === "Financial Aid" || item.text === "Notices") {
+      return { start: { x: 0.0, y: 0.5 }, end: { x: 1.0, y: 0.5 } };
+    } else {
+      // Default to top to bottom
+      return { start: { x: 0.5, y: 0.0 }, end: { x: 0.5, y: 1.0 } };
+    }
+  };
+
+  const gradientDirection = getGradientDirection(item);
+  if (item.id !== "6") {
+    return (
+      <View style={styles.itemContainer2}>
+        <LinearGradient
+          colors={[item.color1, item.colo2]} // Change colors as per your preference
+          style={styles.gradient}
+          {...gradientDirection}
+        >
+          <Image
+            source={
+              !!item.text && item.text === "Matches"
+                ? { uri: "http://mobile.khelsathi.in/files/sports/" + image }
+                : item.imageName
+            }
+            style={styles.image2}
+          />
+          <Text style={styles.text2}>
+            {!!item.text && item.text === "Matches" ? data : item.text}
+          </Text>
+        </LinearGradient>
+      </View>
+    );
+  } else {
+    return <View style={styles.itemContainer}></View>;
+  }
+};
+
+const CurvedGridView = ({ navigation, state, data, image }) => {
+  return state === "true" ? (
     <FlatList
-      data={data}
+      data={dataMain}
       numColumns={2}
-      renderItem={({ item }) => <CurvedGridItem item={item} />}
+      renderItem={({ item }) => (
+        <CurvedGridItem navigation={navigation} item={item} />
+      )}
+      scrollEnabled={false}
+      keyExtractor={(item) => item.id}
+    />
+  ) : (
+    <FlatList
+      data={data2}
+      numColumns={2}
+      renderItem={({ item }) => (
+        <SportsDetails item={item} data={data} image={image} />
+      )}
       scrollEnabled={false}
       keyExtractor={(item) => item.id}
     />
@@ -272,6 +415,14 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     borderRadius: 15,
+    overflow: "hidden",
+  },
+  itemContainer2: {
+    flex: 1,
+    elevation: 4,
+    marginHorizontal: 15,
+    marginVertical: 12,
+    borderRadius: 14,
     overflow: "hidden",
   },
   gradient: {
@@ -287,8 +438,18 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     marginBottom: 8,
   },
+  image2: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+    marginBottom: 8,
+  },
   text: {
     color: "white",
+    fontWeight: "bold",
+  },
+  text2: {
+    color: "black",
     fontWeight: "bold",
   },
 });
