@@ -1,21 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BackArrowHeaderWhite from "../components/BackArrowHeaderWhite";
 import SportsCalendarDetails from "../components/SportsCalendarHome/SportsCalenderDetails";
 
 export default function SportsCalender({ route, navigation }) {
-  const header = route.params.from;
+  const header = route.params.header;
+  const checkboxData = route.params.checkboxData || {};
+
+  // Use checkboxData as needed
+  useEffect(() => {
+    console.log(checkboxData);
+  }, [checkboxData]);
   return (
     <SafeAreaView style={styles.rootContainer}>
       <BackArrowHeaderWhite
-        FilterHandler={() => navigation.navigate("FilterSportsCalendar",{header:header})}
+        FilterHandler={() =>  
+          navigation.navigate("FilterSportsCalendar", { header: header })
+        }
         searchTitle={header}
         title={header}
         backButton={() => navigation.goBack()}
       />
       <View style={{ flex: 1, backgroundColor: "#f5f5f5" }}>
-        <SportsCalendarDetails header={header} />
+        <SportsCalendarDetails header={header} checkboxData={checkboxData} />
       </View>
     </SafeAreaView>
   );

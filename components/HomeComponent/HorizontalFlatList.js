@@ -41,13 +41,13 @@ const HorizontalFlatList = ({ navigation, state }) => {
   function sportsCalenderHandler(item,navigation) {
     if (item.id === "1") {
       console.log("Pressed Camps");
-      navigation.navigate('SportsCalendar',{from:'Camps'})
+      navigation.navigate('SportsCalendar',{header:'Camps'})
     } else if (item.id === "2") {
       console.log("Pressed Trials");
-      navigation.navigate('SportsCalendar',{from:'Trials'})
+      navigation.navigate('SportsCalendar',{header:'Trials'})
     } else if (item.id === "3") {
       console.log("Pressed Matches");
-      navigation.navigate('SportsCalendar',{from:'Matches'})
+      navigation.navigate('SportsCalendar',{header:'Matches'})
     } else if (item.id === "4") {
       console.log("Pressed Apply for Awards");
       ToastAndroid.show("Please Login To Apply",ToastAndroid.SHORT)
