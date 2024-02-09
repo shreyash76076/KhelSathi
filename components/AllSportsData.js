@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { getSports } from "../Util/auth";
 
@@ -17,7 +18,7 @@ let ITEMS_PER_PAGE = 20;
 const CurvedGridItem = ({navigation, item,flag }) => {
   if (item.id !== "placeholder") {
     return (
-      <Pressable
+      <TouchableOpacity
         style={styles.itemContainer}
         onPress={() => navigation.navigate("SportsDetails", { data: item,flag:1 })}
       >
@@ -32,7 +33,7 @@ const CurvedGridItem = ({navigation, item,flag }) => {
             <Text style={styles.text}>{item.name}</Text>
           </LinearGradient>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     );
   } else {
     return <View style={styles.itemContainer}></View>;

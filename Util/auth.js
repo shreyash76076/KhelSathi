@@ -63,6 +63,27 @@ async function getNewList(model, limit, page) {
   }
 }
 
+async function getDropDown(model, limit, page) {
+  const url = `${BASE_URL}getDropdown`;
+
+  try {
+    const response = await axios.post(url, {
+      lang: "en",
+      limit: limit,
+      model: model,
+      page: page,
+    });
+
+    const { _result, total_count } = response.data;
+    // Return an object containing both the _result and total_count
+    console.log("Total Count----", total_count);
+    return { result: _result, totalCount: total_count };
+  } catch (error) {
+    console.error(`Error in getList (${model}):`, error);
+    throw error;
+  }
+}
+
 async function getSportsCalendarData(endPoint, model, limit, page,searchQuery) {
   const url = `${BASE_URL}${endPoint}`;
 
@@ -285,6 +306,10 @@ export async function getGrounds() {
 }
 export async function getSports(limit, page) {
   return await getList("Sports", limit, page);
+}
+
+export async function getSportsDropDown(limit, page) {
+  return await getDropDown("Sports", limit, page);
 }
 
 export async function getNotices(limit, page) {

@@ -53,7 +53,6 @@ function HomeScreen() {
         component={AllSports}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "slide_from_bottom",
         }}
       />
@@ -127,7 +126,6 @@ function FacilitiesScreen() {
         component={Facilities}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "slide_from_bottom",
         }}
       />
@@ -159,7 +157,6 @@ function AuthStack() {
         component={ForgotPassword}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "fade",
         }}
       />
@@ -168,7 +165,6 @@ function AuthStack() {
         component={RegisterCategory}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "fade",
         }}
       />
@@ -177,7 +173,6 @@ function AuthStack() {
         component={SignUp}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "fade",
         }}
       />
@@ -186,7 +181,6 @@ function AuthStack() {
         component={ForgotOtp}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "none",
         }}
       />
@@ -195,7 +189,6 @@ function AuthStack() {
         component={UpdatePassword}
         options={{
           headerShown: false,
-          presentation: "modal",
           animation: "none",
         }}
       />
